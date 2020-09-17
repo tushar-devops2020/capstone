@@ -7,7 +7,7 @@ pipeline {
 				withAWS(region:'us-west-2', credentials:'tusharc3') {
 					sh '''
 						eksctl create cluster \
-						--name capstonecluster \
+						--name capstoneAppcluster \
 						--version 1.14 \
 						--nodegroup-name standard-workers \
 						--node-type t2.small \
