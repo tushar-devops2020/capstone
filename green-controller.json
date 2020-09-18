@@ -22,7 +22,7 @@
             "containers":[
                {
                   "name":"green",
-                  "image":"tushardevops2020/capstone_udacity$BUILD_NUMBER",
+                  "image":"tushardevops2020/capstone_udacity",
                   "ports":[
                      {
                         "name":"http-server",
