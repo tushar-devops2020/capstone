@@ -2,8 +2,8 @@
 Udacity Nanodegree Cloud DevOps Capstone project repo
 
 **Step-1** 
-Deployment Strategy - Blue Green
-CI/CD Tool - Jenkins
+Deployment Strategy - Blue Green <br>
+CI/CD Tool - Jenkins <br>
 Install Jenkins on AWS EC2 Instance.
 Plugins - Blue Ocean, AWS
 Tools (to be installed on Jenkins server) - Tidy (Lint test for HTML) , Hadolint (Lint test for Dockerfile), eksctl, AWS CLI, kubectl, docker
