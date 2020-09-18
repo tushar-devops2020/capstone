@@ -1,9 +1,4 @@
 pipeline {
-
-	environment {
-		registry = "tushardevops2020/capstone_udacity"
-		registryCredential = ‘mydockerhub’
-  }
 	agent any
 	stages {
 
@@ -14,29 +9,25 @@ pipeline {
 			}
 		}
 		
-		stage('Build Docker Image') {
+		stage('Build Docker Image with html app') {
 			steps {
-				script {
-					dockerImage = docker.build registry + ":$BUILD_NUMBER"
-					
+				withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'mydockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]){
+					sh '''
+						docker build -t tushardevops2020/capstone_udacity .
+					'''
 				}
 			}
 		}
-		
-		stage('Push Image To Dockerhub') {
+
+		stage('Push Docker Image To Dockerhub') {
 			steps {
-				script {
-					docker.withRegistry( '', registryCredential ) {
-					dockerImage.push()
-					}
+				withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'mydockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]){
+					sh '''
+						docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+						docker push tushardevops2020/capstone_udacity
+					'''
 				}
 			}
-		}
-		stage('Remove Unused docker image') {
-			steps{
-					sh "docker rmi $registry:$BUILD_NUMBER"
-				}
-			
 		}
 		stage('Set current kubectl context') {
 			steps {
