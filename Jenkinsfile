@@ -1,6 +1,34 @@
 pipeline {
 	agent any
 	stages {
+
+		stage('Lint Test for HTML & Dockerfile ') {
+			steps {
+				sh 'tidy -q -e *.html'
+				sh 'hadolint Dockerfile'
+			}
+		}
+		
+		stage('Build Docker Image with html app') {
+			steps {
+				withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'mydockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]){
+					sh '''
+						docker build -t tushardevops2020/capstone_udacity_1 .
+					'''
+				}
+			}
+		}
+
+		stage('Push Docker Image To Dockerhub') {
+			steps {
+				withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'mydockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]){
+					sh '''
+						docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+						docker push tushardevops2020/capstone_udacity_1
+					'''
+				}
+			}
+		}
 		stage('Set current kubectl context') {
 			steps {
 				withAWS(region:'us-west-2', credentials:'tusharc3') {
